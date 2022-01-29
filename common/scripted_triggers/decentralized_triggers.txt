@@ -1,0 +1,82 @@
+### Decentralized Scripted Triggers
+# This = pop
+# Prev = planet
+# root = country = decentralizer
+is_decent_majority_species = {
+	is_sapient = yes
+	OR = {
+		NOT = { is_same_species = event_target:decentralizer.species }
+		species = {
+			exists = home_planet
+			home_planet = { is_planet = prevprevprev }
+		}
+	}
+	OR = {
+		species = {
+			exists = home_planet
+			home_planet = { is_planet = prevprevprev }
+		}
+		AND = {
+			is_enslaved = no
+			is_being_purged = no
+			is_robot_pop = no
+			is_being_assimilated = no
+			# can_live_on_planet = yes
+			# has_population_control = { value = no country = prev.owner } CW262?
+			has_population_control = {
+				value = no
+				country = event_target:decentralizer # prev.owner
+			}
+			# has_migration_control = { value = no country = prev.owner } CW262?
+			has_migration_control = {
+				value = no
+				country = event_target:decentralizer # prev.owner
+			}
+			has_colonization_control = {
+				value = no
+				country = event_target:decentralizer # prev.owner
+			}
+			prev = {
+				habitability = { who = prev value > 0.65 }
+			}
+			# species = {
+			# 	has_citizenship_type = {
+			# 		type = citizenship_full
+			# 		country = event_target:decentralizer
+			# 	}
+			# 	species_has_happiness_with_owner = event_target:decentralizer
+			# 	is_sapient = yes # NOT = { is_archetype = PRESAPIENT }
+			# }
+		}
+		species = {
+			prevprev = { is_ideal_planet_class = { who = prev status = yes } }
+			OR = {
+				prevprev = { is_majority_species = prev }
+				species_has_happiness_with_owner = event_target:decentralizer
+				has_citizenship_type = {
+					type = citizenship_full
+					country = event_target:decentralizer
+				}
+			}
+			is_sapient = yes # NOT = { is_archetype = PRESAPIENT }
+		}
+		AND = {
+			prev = { is_majority_species = prev.species }
+			NOT = { is_same_species = event_target:decentralizer.owner_species }
+		}
+	}
+	PREV = {
+		habitability = { who = prev value > 0.65 }
+		count_owned_pop = {
+			limit = {
+				is_enslaved = no
+				is_being_purged = no
+				is_robot_pop = no
+				happiness > 0.5
+				# can_live_on_planet = yes
+				is_same_species = prevprev.species
+			}
+			count > 4
+		}
+	}
+}

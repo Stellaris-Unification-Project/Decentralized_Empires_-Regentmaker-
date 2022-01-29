@@ -1,0 +1,77 @@
+# DECENTRALIZED
+ap_decentralization = {
+	potential = {
+		exists = capital_scope
+		NOR = {
+			is_ai = yes
+			has_ascension_perk = ap_decentralization
+			has_ethic = ethic_gestalt_consciousness # requires_actor_not_gestalt_consciousness
+		}
+	}
+	possible = {
+		custom_tooltip = {
+			fail_text = "requires_ascension_perks_3"
+			num_ascension_perks > 2
+		}
+		# custom_tooltip = {
+		# 	fail_text = "HAS_NOT_NUM_OWNED_PLANETS"
+		# any_owned_planet = { is_colony = yes
+		num_owned_planets > 7
+		# }
+		custom_tooltip = {
+			fail_text = "requires_actor_not_fanatic_purifiers"
+			NOT = {
+				has_valid_civic = civic_fanatic_purifiers
+			}
+		}
+		# custom_tooltip = {
+		# 	fail_text = "requires_actor_not_devouring_swarm"
+		# 	NOT = {
+		# 		has_valid_civic = civic_hive_devouring_swarm
+		# 	}
+		# }
+		# custom_tooltip = {
+		# 	# requires_actor_not_machine_terminator_federation
+		# 	fail_text = "requires_actor_not_machine_terminator"
+		# 	NOT = {
+		# 		has_civic = civic_machine_terminator
+		# 	}
+		# }
+		# custom_tooltip = {
+		# 	fail_text = "requires_actor_not_machine_assimilator"
+		# 	NOT = {
+		# 		has_civic = civic_machine_assimilator
+		# 	}
+		# }
+		# custom_tooltip = {
+		# 	fail_text = "requires_actor_not_inward_perfection"
+		# 	NOT = {
+		# 		has_valid_civic = civic_inwards_perfection
+		# 	}
+		# }
+		# custom_tooltip = {
+		# 	fail_text = "requires_actor_not_barbaric_despoilers"
+		# 	NOT = {
+		# 		has_valid_civic = civic_barbaric_despoilers
+		# 	}
+		# }
+		# custom_tooltip = {
+		# 	fail_text = "requires_tradition_the_federation"
+		# 	OR = {
+		# 		has_authority = auth_machine_intelligence
+		# 		has_federation = yes
+		# 		has_active_tradition = tr_diplomacy_the_federation
+		# 		NOT = { is_country_type = default }
+		# 	}
+		# }
+	}
+	on_enabled = {
+		# custom_tooltip = "ap_decentralization_effect"
+		hidden_effect = {
+			country_event = {
+				id = decentralized.2
+			}
+		}
+	}
+	modifier = {}
+}

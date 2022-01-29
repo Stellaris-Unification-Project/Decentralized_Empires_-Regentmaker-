@@ -1,0 +1,51 @@
+planetary_nationalism = {
+	pop_happiness = 0.1
+	planet_jobs_minerals_produces_mult = 0.2
+	planet_jobs_energy_produces_mult = 0.2
+	planet_jobs_alloys_produces_mult = 0.2
+	# icon = "gfx/interface/icons/planet_modifiers/pm_weak_magnetic_field.dds"
+	icon = "gfx/interface/icons/planet_modifiers/pm_nationalism.dds"
+	icon_frame = 2
+}
+
+autonomy_lost = {
+	pop_happiness = -0.15
+	planet_jobs_energy_produces_mult = -0.05
+	planet_jobs_minerals_produces_mult = -0.05
+	icon = "gfx/interface/icons/planet_modifiers/pm_unrest.dds"
+	icon_frame = 2
+}
+
+electoral = {
+	trade_value_mult = 0.05
+	empire_size_penalty_mult = -0.1
+	country_subject_power_penalty_mult = -0.2
+	icon = "gfx/interface/icons/modifiers/mod_job_noble_add.dds"
+	icon_frame = 2
+}
+
+decentralized_leader = {
+	trade_value_mult = 0.2
+	empire_size_penalty_mult = -0.4
+	country_subject_power_penalty_mult = -0.6
+	icon = "gfx/interface/icons/dlc/anniversary_species_pack.dds"
+	icon_frame = 2
+}
+
+regentmaker_colony = {
+	stations_produces_mult = 0.2
+	planet_jobs_produces_mult = 0.2
+	country_naval_cap_mult = -0.2
+	icon = "gfx/interface/icons/planet_modifiers/pm_nationalism.dds"
+	icon_frame = 2
+}
+
+SUBJECT_member_state = {
+	icon = "gfx/interface/icons/modifiers/mod_job_noble_add.dds"
+	stations_produces_mult = 0.7
+	planet_jobs_produces_mult = 0.7
+	country_naval_cap_mult = -0.25
+	ships_upkeep_mult = -0.25
+	starbase_shipyard_build_cost_mult = -0.25
+	planet_stability_add = 14
+}

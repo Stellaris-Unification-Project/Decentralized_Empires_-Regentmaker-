@@ -1,0 +1,30 @@
+# Decentralization
+special_project = {
+	key = "DECENTRALIZATION_PROJECT"
+	picture = GFX_evt_diplomatic_visit
+	icon = "gfx/interface/icons/situation_log/situation_log_federation.dds"
+	cost = { base = 500 }
+	tech_department = society_technology
+	event_scope = planet_event
+	location = no
+	# requirements = { }
+	on_start = {
+		# Pre-exclude near capital systems!? (from decentralized.2)
+		solar_system = {
+			set_timed_star_flag = { flag = decentral_excluded days = 30 }
+			every_neighbor_system = {
+				limit = {
+					has_owner = yes
+					is_owned_by = root
+				}
+				set_timed_star_flag = { flag = decentral_excluded days = 30 }
+			}
+		}
+	}
+	on_success = {
+		owner = {
+			country_event = { id = decentralized.1 }
+		}
+	}
+	# on_cancel = { }
+}

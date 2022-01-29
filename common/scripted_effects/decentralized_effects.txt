@@ -1,0 +1,165 @@
+### Decentralized Scripted Effects
+
+## Fully commit empire (otherwise systems can relegate)
+# This = target empire (beneficiary)
+# Prev = dissolved empire
+fully_commit_prev_empire_to_this = {
+	PREV = {
+		every_owned_fleet = { set_owner = prevprev }
+		every_owned_army = { set_owner = prevprev }
+		every_system_within_border = {
+			limit = { exists = starbase }
+			starbase = { set_owner = prevprevprev }
+		}
+		every_owned_planet = {
+			limit = {
+				has_owner = yes
+				has_ground_combat = no
+				is_occupied_flag = no
+				is_capital = no
+			}
+			set_owner = prevprev
+			# set_controller = prevprev
+		}
+		# At last (otherwise systems can relegate)
+		capital_scope = {
+			if = {
+				limit = {
+					has_ground_combat = no
+					is_occupied_flag = no
+				}
+				if = { limit = { prevprev = { is_same_empire = root } }
+					remove_modifier = planetary_nationalism
+				}
+				set_owner = prevprev
+				root = { change_variable = { which = subject_member value = -1 } }
+				log = "Reduce subject member to \\[root.subject_member] \\[prev.GetName]"
+			} else = {
+				set_owner = root
+			}
+		}
+		# destroy_country = yes
+	}
+}
+
+# Root = overlord
+# Prev = new owner
+commit_system_to = {
+	starbase = { set_owner = $EMPIRE|PREVPREV$ }
+	every_system_planet = {
+		limit = {
+			has_owner = yes
+			has_ground_combat = no
+			is_occupied_flag = no
+			OR = {
+				owner = {
+					is_subject = yes
+					OR = {
+						is_country_type = default
+						is_subject_type = member_state
+					}
+					is_loyal_to = root
+					root = { is_overlord_to = prev }
+				}
+				is_owned_by = root
+			}
+		}
+		if = { limit = { is_capital = yes }
+			# fully commit empire (otherwise systems can relegate)
+			owner = {
+				if = { limit = { exists = $EMPIRE$ $EMPIRE$ = { is_scope_type = country } }
+					$EMPIRE$ = { fully_commit_prev_empire_to_this = yes }
+				}
+				else_if = { limit = { exists = prevprev prevprev = { is_scope_type = country } }
+					prevprev = { fully_commit_prev_empire_to_this = yes }
+				}
+				else = { root = { fully_commit_prev_empire_to_this = yes } }
+			}
+		} else = {
+			set_owner = $EMPIRE|PREVPREV$
+		}
+		if = { limit = { is_owned_by = root }
+			remove_modifier = planetary_nationalism
+		}
+	}
+}
+
+## Save target species
+# This = planet
+# Root = country
+get_vassal_species = {
+	no_scope = { save_event_target_as = vassal_species } # clear
+	if = {
+		limit = { num_species = 1 }
+		random_owned_pop = {
+			species = { save_event_target_as = vassal_species }
+		}
+	}
+	else = {
+		random_owned_pop = {
+			limit = { is_decent_majority_species = yes }
+			species = { save_event_target_as = vassal_species }
+		}
+		if = {
+			limit = {
+				NAND = {
+					exists = event_target:vassal_species
+					event_target:vassal_species = { is_scope_valid = yes is_scope_type = species }
+				}
+			}
+			random_owned_pop = {
+				limit = { prev = { is_majority_species = prev.species } }
+				species = { save_event_target_as = vassal_species }
+			}
+		}
+	}
+	# count_owned_pop = {
+	# 	count = all
+	# 	limit = {  }
+	# }
+	# FULL Fallback (mostly not needed)
+	if = {
+		limit = {
+			NAND = {
+				exists = event_target:vassal_species
+				event_target:vassal_species = { is_scope_valid = yes is_scope_type = species }
+			}
+		}
+		if = {
+			limit = { num_unique_species > 1 }
+			random_owned_species = {
+				limit = {
+					NOT = { is_exact_same_species = event_target:decentralizer.owner_species }
+				}
+				save_event_target_as = vassal_species
+			}
+		} else = {
+			random_owned_species = {
+				limit = { is_scope_valid = yes }
+				save_event_target_as = vassal_species
+			}
+		}
+	}
+	if = {
+		limit = {
+			exists = sector
+			sector = { exists = leader }
+			is_sector_capital = yes
+		}
+		sector.leader = {
+			save_event_target_as = vassal_leader
+			unassign_leader = this
+			log="Save leader \\[vassal_leader.GetName]"
+		}
+	}
+	if = {
+		limit = {
+			NAND = {
+				exists = event_target:vassal_species
+				event_target:vassal_species = { is_scope_valid = yes is_scope_type = species }
+			}
+		}
+		from = { save_event_target_as = vassal_species }
+		log_error ="no valid vassal_species found \\[This.GetName]"
+	}
+}

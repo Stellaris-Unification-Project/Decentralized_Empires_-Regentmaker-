@@ -1,0 +1,13 @@
+pm_planetary_nationalism = {
+	spawn_chance = {
+		#None
+	}
+	modifier = "planetary_nationalism"
+}
+
+pm_regentmaker_colony = {
+	spawn_chance = {
+		#None
+	}
+	modifier = "regentmaker_colony"
+}
